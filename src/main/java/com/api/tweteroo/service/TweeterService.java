@@ -27,14 +27,14 @@ public class TweeterService {
         return repositoryTweet.findAll();
     }
 
-    public void createTweete(TweetModel tweet){
+    public void createTweet(TweetModel tweet){
         repositoryTweet.save(tweet);
     }
     public void createUser(UserModel user){
         repositoryUser.save(user);
     }
 
-    public List<UserModel>  findByUser(String userName) {
+    public List<UserModel> findByUser(String userName) {
         return repositoryUser.findByUsername( userName);
     }
 }

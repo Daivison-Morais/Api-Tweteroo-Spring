@@ -39,15 +39,15 @@ public class TweeterController {
 
     @GetMapping("/{userName}")
     public List<UserModel> getByUser(@PathVariable String userName) {
-        return repositoryUser.findByUsername(userName);
+        return service.findByUser(userName);
     } 
 
-    @PostMapping
-    public void createTweete(@RequestBody @Valid TweetDTO req) {
-        service.createTweete(new TweetModel(req));
+    @PostMapping("/tweet")
+    public void createTweet(@RequestBody @Valid TweetDTO req) {
+        service.createTweet(new TweetModel(req));
     }
 
-    @PostMapping
+    @PostMapping("/user")
     public void createUser(@RequestBody @Valid UserDTO req) {
         service.createUser(new UserModel(req));
     }
