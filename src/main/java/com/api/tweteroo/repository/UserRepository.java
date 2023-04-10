@@ -10,8 +10,5 @@ import com.api.tweteroo.models.UserModel;
 
 @Repository
 public interface UserRepository extends JpaRepository <UserModel, Long> {
-
-    @Query(value = "select u from UserModel u where u.username like %?1%")
-    List<UserModel>  findByUsername(String userName);
    
 }

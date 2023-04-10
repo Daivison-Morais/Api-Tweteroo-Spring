@@ -1,10 +1,10 @@
 package com.api.tweteroo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.api.tweteroo.dto.TweetDTO;
@@ -18,23 +18,29 @@ import com.api.tweteroo.repository.UserRepository;
 public class TweeterService {
 
     @Autowired
-	private TweeterRepository repositoryTweet;
+    private TweeterRepository repositoryTweet;
 
     @Autowired
-	private UserRepository repositoryUser;
+    private UserRepository repositoryUser;
 
-    public List<TweetModel> findAll(){
-        return repositoryTweet.findAll();
+    public TweeterService(TweeterRepository repositoryTweet) {
+        this.repositoryTweet = repositoryTweet;
     }
 
-    public void createTweet(TweetModel tweet){
+    public Page<TweetDTO> findAll(Pageable pageable) {
+
+        return (Page<TweetDTO>) repositoryTweet.findAllTweets(pageable);
+    }
+
+    public void createTweet(TweetModel tweet) {
         repositoryTweet.save(tweet);
     }
-    public void createUser(UserModel user){
+
+    public void createUser(UserModel user) {
         repositoryUser.save(user);
     }
 
-    public List<UserModel> findByUser(String userName) {
-        return repositoryUser.findByUsername( userName);
+    public List<TweetModel> findByUser(String userName) {
+        return repositoryTweet.findByUsername(userName);
     }
 }
