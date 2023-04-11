@@ -35,16 +35,17 @@ public class TweeterService {
         return (Page<TweetDTO>) repositoryTweet.findAllTweets(pageable);
     }
 
-    public String createTweet(TweetModel tweet) {
+    public void createTweet(TweetModel tweet) {
+        String username = tweet.getUsername();
 
-        List<TweetModel> existUser = repositoryTweet.findByUsername(null);
+        List<UserModel> existUser = repositoryUser.findByUsername(username);
 
         if (existUser.isEmpty()) {
-            throw new Error("Usuário inexistente");
-
+            ResponseEntity.badRequest();
+            return;
         }
         repositoryTweet.save(tweet);
-        return "ok!";
+
     }
 
     public void createUser(UserModel user) {
@@ -53,7 +54,8 @@ public class TweeterService {
         List<UserModel> existUser = repositoryUser.findByUsername(username);
 
         if (!existUser.isEmpty()) {
-            throw new Error("Usuário já existente");
+            ResponseEntity.badRequest();
+            return;
         }
         repositoryUser.save(user);
     }
