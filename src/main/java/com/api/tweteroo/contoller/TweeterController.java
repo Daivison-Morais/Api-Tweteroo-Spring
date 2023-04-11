@@ -2,6 +2,8 @@ package com.api.tweteroo.contoller;
 
 import java.util.List;
 
+import javax.print.DocFlavor.READER;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +35,6 @@ public class TweeterController {
     @GetMapping("/tweets")
     public List<TweetDTO> getAll(@RequestParam("page") int page) {
 
-        System.out.println(page);
-
         Pageable pageable = PageRequest.of(page, 5);
 
         System.out.println(pageable);
@@ -51,7 +51,6 @@ public class TweeterController {
     public void createTweet(@RequestBody @Valid TweetDTO2 req) {
 
         service.createTweet(new TweetModel(req));
-        ResponseEntity.ok("OK");
 
     }
 

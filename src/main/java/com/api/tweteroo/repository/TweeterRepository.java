@@ -16,7 +16,7 @@ import com.api.tweteroo.models.TweetModel;
 public interface TweeterRepository
         extends PagingAndSortingRepository<TweetModel, Long>, JpaRepository<TweetModel, Long> {
 
-    List<TweetModel> findByUsername(String userName);
+            List<TweetModel> findByUsername(String userName);
 
     @Query(value = "SELECT new com.api.tweteroo.dto.TweetDTO(t.username, u.avatar, t.tweet) FROM TweetModel t JOIN UserModel u")
     Page<TweetDTO> findAllTweets(Pageable pageable);

@@ -1,11 +1,14 @@
 package com.api.tweteroo.service;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.api.tweteroo.dto.TweetDTO;
 import com.api.tweteroo.models.TweetModel;
@@ -32,11 +35,26 @@ public class TweeterService {
         return (Page<TweetDTO>) repositoryTweet.findAllTweets(pageable);
     }
 
-    public void createTweet(TweetModel tweet) {
+    public String createTweet(TweetModel tweet) {
+
+        List<TweetModel> existUser = repositoryTweet.findByUsername(null);
+
+        if (existUser.isEmpty()) {
+            throw new Error("Usuário inexistente");
+
+        }
         repositoryTweet.save(tweet);
+        return "ok!";
     }
 
     public void createUser(UserModel user) {
+
+        String username = user.getUsername();
+        List<UserModel> existUser = repositoryUser.findByUsername(username);
+
+        if (!existUser.isEmpty()) {
+            throw new Error("Usuário já existente");
+        }
         repositoryUser.save(user);
     }
 
