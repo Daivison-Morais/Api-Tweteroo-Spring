@@ -2,11 +2,10 @@ package com.api.tweteroo.contoller;
 
 import java.util.List;
 
-import javax.print.DocFlavor.READER;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,7 @@ public class TweeterController {
     @Autowired
     private TweeterService service;
 
-    @GetMapping("/tweets")
+    @GetMapping("/tweets/{page}")
     public List<TweetDTO> getAll(@RequestParam("page") int page) {
 
         Pageable pageable = PageRequest.of(page, 5);
@@ -43,14 +42,16 @@ public class TweeterController {
     }
 
     @GetMapping("/tweet/{userName}")
-    public List<TweetModel> getByUser(@PathVariable String userName) {
-        return service.findByUser(userName);
+    public ResponseEntity<List<TweetModel>> getByUser(@PathVariable String userName) {
+        List<TweetModel> tweets = service.findByUser(userName);
+        return ResponseEntity.status(HttpStatus.OK).body(tweets); 
     }
 
     @PostMapping("/tweets")
-    public void createTweet(@RequestBody @Valid TweetDTO2 req) {
+    public ResponseEntity<Void> createTweet(@RequestBody @Valid TweetDTO2 req) {
 
         service.createTweet(new TweetModel(req));
+        return ResponseEntity.ok().build();
 
     }
 
@@ -58,9 +59,7 @@ public class TweeterController {
     public void createUser(@RequestBody @Valid UserDTO req) {
 
         service.createUser(new UserModel(req));
-        ResponseEntity.ok("OK");
+        ResponseEntity.ok("Usuário cadastrado com sucesso!");
     }
-
-    // , @RequestHeader("username") String reqt
 
 }
